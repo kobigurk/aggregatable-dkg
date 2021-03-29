@@ -1,14 +1,14 @@
 [package]
-name = "aggregatable-dkg"
+name = "algebraic_signature"
 version = "0.1.0"
 authors = []
 edition = "2018"
 
 [dependencies]
-algebra = { git = "https://github.com/scipr-lab/zexe", package = "algebra", features = [ "bls12_381" ] }
-algebra-core = { git = "https://github.com/scipr-lab/zexe", package = "algebra-core", features = [ "derive" ] }
-bench-utils = { git = "https://github.com/scipr-lab/zexe", package = "bench-utils" }
-ff-fft = { git = "https://github.com/scipr-lab/zexe", package = "ff-fft" }
+algebra = { git = "https://github.com/scipr-lab/zexe", rev = "4ea6540322cee6d1f03a63284e5227ccfba6aea9", package = "algebra", features = [ "bls12_381" ] }
+algebra-core = { git = "https://github.com/scipr-lab/zexe",  rev = "4ea6540322cee6d1f03a63284e5227ccfba6aea9", package = "algebra-core", features = [ "derive" ] }
+bench-utils = { git = "https://github.com/scipr-lab/zexe",  rev = "4ea6540322cee6d1f03a63284e5227ccfba6aea9", package = "bench-utils" }
+ff-fft = { git = "https://github.com/scipr-lab/zexe",  rev = "4ea6540322cee6d1f03a63284e5227ccfba6aea9", package = "ff-fft" }
 thiserror = "1.0.19"
 rand = "0.7.3"
 rand_chacha = { version = "0.2.1" }
