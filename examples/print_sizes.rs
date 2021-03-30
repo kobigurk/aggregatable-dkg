@@ -1,8 +1,9 @@
-use algebra::{
-    bls12_381::{Fr, G1Affine, G2Affine, G2Projective},
-    AffineCurve, Bls12_381, CanonicalSerialize, PrimeField, ProjectiveCurve, UniformRand, Zero,
-};
-use algebraic_signature::{
+use ark_bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G2Projective};
+use ark_ec::{AffineCurve, ProjectiveCurve};
+use ark_ff::{PrimeField, UniformRand, Zero};
+use ark_serialize::CanonicalSerialize;
+
+use aggregatable_dkg::{
     dkg::{
         config::Config,
         dealer::Dealer,
@@ -19,11 +20,11 @@ use algebraic_signature::{
         schnorr::{srs::SRS as SchnorrSRS, SchnorrSignature},
     },
 };
-use ff_fft::{EvaluationDomain, Radix2EvaluationDomain};
+use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
 use rand::thread_rng;
 use std::marker::PhantomData;
 
-fn print_algebraic_signature_sizes() {
+fn print_aggregatable_dkg_sizes() {
     let rng = &mut thread_rng();
     let srs = SRS::<Bls12_381>::setup(rng).unwrap();
     let keypair = Keypair::generate_keypair(rng, srs).unwrap();
@@ -199,7 +200,7 @@ fn print_transcript_size<
 }
 
 fn main() {
-    print_algebraic_signature_sizes();
+    print_aggregatable_dkg_sizes();
     print_bls_signature_sizes();
 
     let rng = &mut thread_rng();

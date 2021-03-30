@@ -1,8 +1,7 @@
 use super::BLSSignatureScheme;
 use crate::signature::utils::errors::SignatureError;
-use algebra::{
-    AffineCurve, CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write,
-};
+use ark_ec::AffineCurve;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 use rand::Rng;
 
 #[derive(Debug, CanonicalSerialize, CanonicalDeserialize, Clone, PartialEq)]

@@ -2,9 +2,8 @@ use crate::signature::{
     scheme::{AggregatableSignatureScheme, BatchVerifiableSignatureScheme, SignatureScheme},
     utils::{errors::SignatureError, hash::hash_to_group},
 };
-use algebra::{
-    AffineCurve, Field, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand, Zero,
-};
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{Field, One, PrimeField, UniformRand, Zero};
 use rand::Rng;
 use srs::SRS;
 use std::{fmt::Debug, ops::Neg};
@@ -252,7 +251,7 @@ impl<E: PairingEngine> BLSSignatureScheme for BLSSignatureG2<E> {
 
 #[cfg(test)]
 mod test {
-    use algebra::Bls12_381;
+    use ark_bls12_381::Bls12_381;
 
     use super::{BLSSignatureG1, BLSSignatureG2, BLSSignatureScheme, SRS};
     use crate::signature::{

@@ -1,5 +1,5 @@
 use crate::signature::utils::errors::SignatureError;
-use algebra_core::{CanonicalDeserialize, CanonicalSerialize};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use rand::Rng;
 use std::fmt::Debug;
 

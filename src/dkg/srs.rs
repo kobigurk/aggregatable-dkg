@@ -1,5 +1,6 @@
 use crate::dkg::errors::DKGError;
-use algebra::{PairingEngine, ProjectiveCurve, UniformRand};
+use ark_ec::{PairingEngine, ProjectiveCurve};
+use ark_ff::UniformRand;
 use rand::Rng;
 
 #[derive(Clone)]

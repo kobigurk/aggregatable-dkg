@@ -8,11 +8,10 @@ use crate::{
     },
     signature::scheme::BatchVerifiableSignatureScheme,
 };
-use algebra::{
-    AffineCurve, BTreeMap, One, PairingEngine, PrimeField, ProjectiveCurve, UniformRand,
-    VariableBaseMSM, Zero,
-};
-use ff_fft::{EvaluationDomain, Radix2EvaluationDomain};
+use ark_ec::{msm::VariableBaseMSM, AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{One, PrimeField, UniformRand, Zero};
+use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+use ark_std::collections::BTreeMap;
 use rand::Rng;
 use std::ops::Neg;
 

@@ -1,8 +1,7 @@
 use crate::signature::utils::errors::SignatureError;
-use algebra::{
-    AffineCurve, CanonicalDeserialize, CanonicalSerialize, PairingEngine, ProjectiveCurve, Read,
-    SerializationError, UniformRand, Write,
-};
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::UniformRand;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 use rand::Rng;
 
 #[derive(Debug, Clone, PartialEq, CanonicalSerialize, CanonicalDeserialize)]

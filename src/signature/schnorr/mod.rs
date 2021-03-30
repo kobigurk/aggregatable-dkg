@@ -2,8 +2,8 @@ use crate::signature::{
     scheme::{BatchVerifiableSignatureScheme, SignatureScheme},
     utils::{errors::SignatureError, hash::hash_to_field},
 };
-use algebra::{AffineCurve, One, PrimeField, ProjectiveCurve, UniformRand, Zero};
-use algebra_core::VariableBaseMSM;
+use ark_ec::{msm::VariableBaseMSM, AffineCurve, ProjectiveCurve};
+use ark_ff::{One, PrimeField, UniformRand, Zero};
 use rand::Rng;
 use srs::SRS;
 use std::{fmt::Debug, ops::Neg};
@@ -146,10 +146,8 @@ impl<C: AffineCurve> BatchVerifiableSignatureScheme for SchnorrSignature<C> {
 
 #[cfg(test)]
 mod test {
-    use algebra::{
-        bls12_381::{G1Affine, G2Affine},
-        AffineCurve,
-    };
+    use ark_bls12_381::{G1Affine, G2Affine};
+    use ark_ec::AffineCurve;
 
     use super::{SchnorrSignature, SRS};
     use crate::signature::{

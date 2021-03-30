@@ -1,5 +1,6 @@
 use crate::signature::utils::errors::SignatureError;
-use algebra::{PairingEngine, SerializationError};
+use ark_ec::PairingEngine;
+use ark_serialize::SerializationError;
 use thiserror::Error;
 
 #[derive(Error, Debug)]

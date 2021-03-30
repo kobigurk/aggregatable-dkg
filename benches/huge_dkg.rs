@@ -1,8 +1,4 @@
-use algebra::{
-    bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G2Projective},
-    AffineCurve, PrimeField, ProjectiveCurve, UniformRand, Zero,
-};
-use algebraic_signature::{
+use aggregatable_dkg::{
     dkg::{
         aggregator::DKGAggregator,
         config::Config,
@@ -20,6 +16,9 @@ use algebraic_signature::{
         schnorr::{srs::SRS as SchnorrSRS, SchnorrSignature},
     },
 };
+use ark_bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G2Projective};
+use ark_ec::{AffineCurve, ProjectiveCurve};
+use ark_ff::{UniformRand, Zero};
 use criterion::{criterion_group, criterion_main, Criterion};
 use ff_fft::{EvaluationDomain, Radix2EvaluationDomain};
 use rand::thread_rng;

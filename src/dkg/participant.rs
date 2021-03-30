@@ -1,5 +1,5 @@
 use crate::signature::scheme::BatchVerifiableSignatureScheme;
-use algebra::PairingEngine;
+use ark_ec::PairingEngine;
 
 #[derive(Clone)]
 pub enum ParticipantState {

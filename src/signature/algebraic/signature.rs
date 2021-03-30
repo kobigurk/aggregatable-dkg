@@ -1,13 +1,11 @@
-use algebra::{
-    AffineCurve, CanonicalDeserialize, CanonicalSerialize, One, PairingEngine, PrimeField,
-    ProjectiveCurve, Read, SerializationError, UniformRand, Write, Zero,
-};
-
 use super::{public_key::ProvenPublicKey, PERSONALIZATION};
 use crate::signature::utils::{
     errors::{SignatureError, VerifyProofEquation},
     hash::hash_to_group,
 };
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{One, PrimeField, UniformRand, Zero};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 use rand::Rng;
 use std::ops::Neg;
 

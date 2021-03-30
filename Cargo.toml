@@ -5,14 +5,16 @@ authors = []
 edition = "2018"
 
 [dependencies]
-algebra = { git = "https://github.com/scipr-lab/zexe", package = "algebra", features = [ "bls12_381" ] }
-algebra-core = { git = "https://github.com/scipr-lab/zexe", package = "algebra-core", features = [ "derive" ] }
-bench-utils = { git = "https://github.com/scipr-lab/zexe", package = "bench-utils" }
-ff-fft = { git = "https://github.com/scipr-lab/zexe", package = "ff-fft" }
+ark-ff = { version = "^0.2.0", features = [ "std" ] }
+ark-ec = { version = "^0.2.0", features = [ "std" ] }
+ark-poly = { version = "^0.2.0", features = [ "std" ] }
+ark-serialize = { version = "^0.2.0", features = [ "std" ] }
+ark-std = { version = "^0.2.0", features = [ "std" ] }
+ark-bls12-381 = { version = "^0.2.0", features = [ "std" ] }
 thiserror = "1.0.19"
 rand = "0.7.3"
 rand_chacha = { version = "0.2.1" }
-once_cell = "1.4.0"
+once_cell = "^1.7"
 blake2s_simd = "0.5.10"
 
 [lib]
@@ -35,10 +37,10 @@ name = "bls"
 harness = false
 
 [features]
-asm = [ "algebra/asm" ]
+asm = [ "ark-ff/asm" ]
 dkg-bench = []
 huge-dkg-bench = []
-print-trace = [ "bench-utils/print-trace" ]
+print-trace = [ "ark-std/print-trace" ]
 
 [[bench]]
 name = "huge_dkg"
