@@ -10,8 +10,9 @@ use crate::{
     },
     signature::scheme::BatchVerifiableSignatureScheme,
 };
-use algebra::{AffineCurve, Field, PairingEngine, PrimeField, ProjectiveCurve, UniformRand};
-use ff_fft::{EvaluationDomain, Radix2EvaluationDomain};
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{Field, PrimeField, UniformRand};
+use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
 use rand::Rng;
 use std::collections::BTreeMap;
 
@@ -244,11 +245,11 @@ mod test {
             schnorr::{srs::SRS as SchnorrSRS, SchnorrSignature},
         },
     };
-    use algebra::{
-        bls12_381::{Bls12_381, Fr, G1Affine, G1Projective, G2Affine, G2Projective},
-        ProjectiveCurve, UniformRand, Zero,
-    };
+    use ark_bls12_381::{Bls12_381, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
+    use ark_ec::ProjectiveCurve;
+    use ark_ff::{UniformRand, Zero};
     use rand::thread_rng;
+
     use std::marker::PhantomData;
 
     #[test]

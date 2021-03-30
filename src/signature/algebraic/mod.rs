@@ -7,7 +7,7 @@ pub const PERSONALIZATION: &[u8] = b"ALGEBSIG";
 
 #[cfg(test)]
 mod test {
-    use algebra::Bls12_381;
+    use ark_bls12_381::Bls12_381;
 
     use super::{keypair::Keypair, public_key::ProvenPublicKey, signature::Signature, srs::SRS};
     use crate::signature::utils::tests::check_serialization;

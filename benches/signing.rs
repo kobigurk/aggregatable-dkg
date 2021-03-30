@@ -1,5 +1,5 @@
-use algebra::Bls12_381;
-use algebraic_signature::signature::algebraic::{keypair::Keypair, srs::SRS};
+use aggregatable_dkg::signature::algebraic::{keypair::Keypair, srs::SRS};
+use ark_bls12_381::Bls12_381;
 use criterion::{criterion_group, criterion_main, Criterion};
 use rand::thread_rng;
 

@@ -1,6 +1,6 @@
-use algebra::{
-    CanonicalDeserialize, CanonicalSerialize, PairingEngine, Read, SerializationError, Write, Zero,
-};
+use ark_ec::PairingEngine;
+use ark_ff::Zero;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 
 #[derive(Clone, Debug, CanonicalSerialize, CanonicalDeserialize)]
 pub struct PVSSShare<E: PairingEngine> {

@@ -1,5 +1,5 @@
 use super::srs::SRS;
-use algebra::PairingEngine;
+use ark_ec::PairingEngine;
 
 #[derive(Clone)]
 pub struct Config<E: PairingEngine> {

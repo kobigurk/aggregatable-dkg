@@ -1,5 +1,5 @@
 use crate::{dkg::participant::Participant, signature::scheme::BatchVerifiableSignatureScheme};
-use algebra::PairingEngine;
+use ark_ec::PairingEngine;
 
 #[derive(Clone)]
 pub struct Dealer<

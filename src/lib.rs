@@ -1,5 +1,5 @@
 #[macro_use]
-extern crate bench_utils;
+extern crate ark_std;
 
 pub mod dkg;
 pub mod signature;

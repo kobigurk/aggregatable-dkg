@@ -1,4 +1,4 @@
-use algebra::{CanonicalDeserialize, CanonicalSerialize};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use std::io::Cursor;
 
 pub fn check_serialization<

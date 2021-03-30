@@ -1,3 +1,4 @@
+use ark_serialize::SerializationError;
 use std::fmt::Display;
 use thiserror::Error;
 
@@ -37,7 +38,7 @@ pub enum SignatureError {
     #[error("SRS is different")]
     SRSDifferent,
     #[error("SerializationError: {0}")]
-    SerializationError(#[from] algebra::SerializationError),
+    SerializationError(#[from] SerializationError),
     #[error("Different lengths in batch verification: {0}, {1}, {2}")]
     BatchVerification(usize, usize, usize),
 }

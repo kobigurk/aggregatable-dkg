@@ -1,8 +1,8 @@
-use algebra::Bls12_381;
-use algebraic_signature::signature::{
+use aggregatable_dkg::signature::{
     bls::{srs::SRS, BLSSignature, BLSSignatureG1},
     scheme::SignatureScheme,
 };
+use ark_bls12_381::Bls12_381;
 use criterion::{criterion_group, criterion_main, Criterion};
 use rand::thread_rng;
 

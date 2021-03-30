@@ -1,6 +1,6 @@
 use crate::signature::utils::errors::SignatureError;
-use algebra::{AffineCurve, Zero};
-use algebra_core::PrimeField;
+use ark_ec::AffineCurve;
+use ark_ff::{PrimeField, Zero};
 use blake2s_simd::Params;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaChaRng;
@@ -24,7 +24,9 @@ pub fn hash_to_group<C: AffineCurve>(
 ) -> Result<C::Projective, SignatureError> {
     let mut rng = rng_from_message(personalization, message);
     loop {
-        let bytes: Vec<u8> = (0..C::SERIALIZED_SIZE).map(|_| rng.gen()).collect();
+        let bytes: Vec<u8> = (0..C::zero().serialized_size())
+            .map(|_| rng.gen())
+            .collect();
         if let Some(p) = C::from_random_bytes(&bytes) {
             let scaled = p.mul_by_cofactor_to_projective();
             if !scaled.is_zero() {
@@ -40,7 +42,9 @@ pub fn hash_to_field<F: PrimeField>(
 ) -> Result<F, SignatureError> {
     let mut rng = rng_from_message(personalization, message);
     loop {
-        let bytes: Vec<u8> = (0..F::SERIALIZED_SIZE).map(|_| rng.gen()).collect();
+        let bytes: Vec<u8> = (0..F::zero().serialized_size())
+            .map(|_| rng.gen())
+            .collect();
         if let Some(p) = F::from_random_bytes(&bytes) {
             return Ok(p);
         }

@@ -1,9 +1,8 @@
 use super::srs::SRS;
 use crate::signature::utils::errors::{SignatureError, VerifyProofEquation};
-use algebra::{
-    AffineCurve, CanonicalDeserialize, CanonicalSerialize, One, PairingEngine, PrimeField,
-    ProjectiveCurve, Read, SerializationError, UniformRand, Write, Zero,
-};
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{One, PrimeField, UniformRand, Zero};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 use rand::Rng;
 use std::ops::Neg;
 

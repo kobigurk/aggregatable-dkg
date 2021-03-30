@@ -2,10 +2,9 @@ use crate::{
     dkg::{errors::DKGError, pvss::PVSSShare},
     signature::scheme::BatchVerifiableSignatureScheme,
 };
-use algebra::{
-    BTreeMap, CanonicalDeserialize, CanonicalSerialize, PairingEngine, Read, SerializationError,
-    Write,
-};
+use ark_ec::PairingEngine;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
+use ark_std::collections::BTreeMap;
 use std::io::Cursor;
 
 #[derive(CanonicalSerialize, CanonicalDeserialize, Clone)]

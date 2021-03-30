@@ -5,10 +5,9 @@ use super::{
     PERSONALIZATION,
 };
 use crate::signature::utils::{errors::SignatureError, hash::hash_to_group};
-use algebra::{
-    AffineCurve, CanonicalDeserialize, CanonicalSerialize, PairingEngine, ProjectiveCurve, Read,
-    SerializationError, UniformRand, Write,
-};
+use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{PrimeField, UniformRand};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, SerializationError, Write};
 use rand::Rng;
 use std::ops::Neg;
 
@@ -94,8 +93,8 @@ impl<E: PairingEngine> Keypair<E> {
         &self,
         hashed_message: E::G1Projective,
     ) -> Result<SignatureProof<E>, SignatureError> {
-        let pi_2_g1 = hashed_message.mul(self.alpha.clone());
-        let pi_4_g1 = hashed_message.mul(self.beta.clone());
+        let pi_2_g1 = hashed_message.mul(self.alpha.into_repr());
+        let pi_4_g1 = hashed_message.mul(self.beta.into_repr());
 
         let signature_proof = SignatureProof {
             pi_2_g1: pi_2_g1.into_affine(),
