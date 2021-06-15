@@ -18,9 +18,9 @@ use aggregatable_dkg::{
 };
 use ark_bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G2Projective};
 use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_ff::{UniformRand, Zero};
+use ark_ff::{PrimeField, UniformRand, Zero};
+use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
 use criterion::{criterion_group, criterion_main, Criterion};
-use ff_fft::{EvaluationDomain, Radix2EvaluationDomain};
 use rand::thread_rng;
 use std::marker::PhantomData;
 
