@@ -7,11 +7,12 @@ use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Read, Serializatio
 use ark_std::collections::BTreeMap;
 use std::io::Cursor;
 
+// NOTE: Currently, we only care about the values of DKG Shares. Transcript sizes are NOT important.
 #[derive(CanonicalSerialize, CanonicalDeserialize, Clone)]
 pub struct DKGShare<
     E: PairingEngine,
     SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
 > {
     pub participant_id: usize,
     pub pvss_share: PVSSShare<E>,
@@ -24,7 +25,7 @@ pub struct DKGShare<
 pub struct DKGTranscriptParticipant<
     E: PairingEngine,
     SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
 > {
     pub c_i: E::G1Affine,
     pub weight: u64,
@@ -36,7 +37,7 @@ pub struct DKGTranscriptParticipant<
 pub struct DKGTranscript<
     E: PairingEngine,
     SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
 > {
     pub degree: usize,
     pub num_participants: usize,
@@ -53,7 +54,7 @@ pub fn message_from_c_i<E: PairingEngine>(c_i: E::G1Affine) -> Result<Vec<u8>, D
 impl<
         E: PairingEngine,
         SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-        SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+        SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
     > DKGTranscript<E, SPOK, SSIG>
 {
     pub fn empty(degree: usize, num_participants: usize) -> Self {

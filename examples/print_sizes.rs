@@ -1,4 +1,4 @@
-use ark_bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G2Projective};
+use ark_bls12_381::{Bls12_381, Fr, G1Affine, G2Affine, G1Projective, G2Projective};
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_ff::{PrimeField, UniformRand, Zero};
 use ark_serialize::CanonicalSerialize;
@@ -76,7 +76,7 @@ fn print_bls_signature_sizes() {
 
 fn print_transcript_size<
     SPOK: BatchVerifiableSignatureScheme<PublicKey = G1Affine, Secret = Fr>,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = G2Affine, Secret = Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = G1Affine, Secret = Fr>,
 >(
     num_nodes: usize,
     tag: &str,
@@ -105,7 +105,7 @@ fn print_transcript_size<
         };
         let dealer = Dealer::<Bls12_381, SSIG> {
             private_key_sig: dealer_keypair_sig.0,
-            accumulated_secret: G2Projective::zero().into_affine(),
+            accumulated_secret: G1Projective::zero().into_affine(),
             participant,
         };
 
@@ -173,7 +173,7 @@ fn print_transcript_size<
     let y_i = y_eval_i
         .iter()
         .enumerate()
-        .map::<Result<G2Affine, DKGError<Bls12_381>>, _>(|(i, a)| {
+        .map::<Result<G1Affine, DKGError<Bls12_381>>, _>(|(i, a)| {
             Ok(participants[i]
                 .public_key_sig
                 .mul(a.into_repr())
@@ -206,10 +206,10 @@ fn main() {
     let rng = &mut thread_rng();
     let srs = DKGSRS::<Bls12_381>::setup(rng).unwrap();
 
-    let bls_sig = BLSSignature::<BLSSignatureG1<Bls12_381>> {
+    let bls_sig = BLSSignature::<BLSSignatureG2<Bls12_381>> {
         srs: BLSSRS {
-            g_public_key: srs.h_g2,
-            g_signature: srs.g_g1,
+            g_public_key: srs.g_g1,
+            g_signature: srs.h_g2,
         },
     };
     let bls_pok = BLSSignature::<BLSSignatureG2<Bls12_381>> {
@@ -223,9 +223,9 @@ fn main() {
     print_transcript_size(256, "bls ", srs.clone(), bls_pok.clone(), bls_sig.clone());
     print_transcript_size(8192, "bls ", srs.clone(), bls_pok.clone(), bls_sig.clone());
 
-    let schnorr_sig = SchnorrSignature::<G2Affine> {
+    let schnorr_sig = SchnorrSignature::<G1Affine> {
         srs: SchnorrSRS {
-            g_public_key: srs.h_g2,
+            g_public_key: srs.g_g1,
         },
     };
     let schnorr_pok = SchnorrSignature::<G1Affine> {

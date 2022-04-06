@@ -7,7 +7,7 @@ pub struct PVSSShare<E: PairingEngine> {
     pub f_i: Vec<E::G1Affine>,
     pub u_i_2: E::G2Affine,
     pub a_i: Vec<E::G1Affine>,
-    pub y_i: Vec<E::G2Affine>,
+    pub y_i: Vec<E::G1Affine>,
 }
 
 impl<E: PairingEngine> PVSSShare<E> {
@@ -16,7 +16,7 @@ impl<E: PairingEngine> PVSSShare<E> {
             f_i: vec![E::G1Affine::zero(); degree + 1],
             u_i_2: E::G2Affine::zero(),
             a_i: vec![E::G1Affine::zero(); num_participants],
-            y_i: vec![E::G2Affine::zero(); num_participants],
+            y_i: vec![E::G1Affine::zero(); num_participants],
         }
     }
 

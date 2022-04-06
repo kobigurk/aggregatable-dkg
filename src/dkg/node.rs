@@ -19,7 +19,7 @@ use std::collections::BTreeMap;
 pub struct Node<
     E: PairingEngine,
     SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
 > {
     pub aggregator: DKGAggregator<E, SPOK, SSIG>,
     pub dealer: Dealer<E, SSIG>,
@@ -28,7 +28,7 @@ pub struct Node<
 impl<
         E: PairingEngine,
         SPOK: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
-        SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+        SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
     > Node<E, SPOK, SSIG>
 {
     pub fn new(
@@ -95,12 +95,15 @@ impl<
         let y_i = y_eval_i
             .iter()
             .enumerate()
-            .map::<Result<E::G2Affine, DKGError<E>>, _>(|(i, a)| {
+            .map::<Result<E::G1Affine, DKGError<E>>, _>(|(i, a)| {
                 Ok(self
                     .aggregator
                     .participants
                     .get(&i)
                     .ok_or(DKGError::<E>::InvalidParticipantId(i))?
+                    // Since, we need public_key_sig as E::G1Affine (shorter pubkeys), so
+                    // we had to convert y_i (initially E::G2Affine) to E::G1Affine as well.
+                    // I don't understand the mathematical implications of it yet.
                     .public_key_sig
                     .mul(a.into_repr())
                     .into_affine())
@@ -177,7 +180,7 @@ impl<
     ) -> Result<(), DKGError<E>> {
         let participant_id = share.participant_id;
 
-        match (|| -> Result<E::G2Affine, DKGError<E>> {
+        match (|| -> Result<E::G1Affine, DKGError<E>> {
             self.aggregator.receive_share(rng, &share)?;
 
             let secret = share.pvss_share.y_i[self.dealer.participant.id]
@@ -256,10 +259,10 @@ mod test {
     fn test_one() {
         let rng = &mut thread_rng();
         let srs = SRS::<Bls12_381>::setup(rng).unwrap();
-        let bls_sig = BLSSignature::<BLSSignatureG1<Bls12_381>> {
+        let bls_sig = BLSSignature::<BLSSignatureG2<Bls12_381>> {
             srs: BLSSRS {
-                g_public_key: srs.h_g2,
-                g_signature: srs.g_g1,
+                g_public_key: srs.g_g1,
+                g_signature: srs.h_g2,
             },
         };
         let bls_pok = BLSSignature::<BLSSignatureG2<Bls12_381>> {
@@ -271,7 +274,7 @@ mod test {
         let dealer_keypair_sig = bls_sig.generate_keypair(rng).unwrap();
         let dealer = Dealer {
             private_key_sig: dealer_keypair_sig.0,
-            accumulated_secret: G2Projective::zero().into_affine(),
+            accumulated_secret: G1Projective::zero().into_affine(),
             participant: Participant {
                 pairing_type: PhantomData,
                 id: 0,
@@ -311,10 +314,10 @@ mod test {
 
         let rng = &mut thread_rng();
         let srs = SRS::<Bls12_381>::setup(rng).unwrap();
-        let bls_sig = BLSSignature::<BLSSignatureG1<Bls12_381>> {
+        let bls_sig = BLSSignature::<BLSSignatureG2<Bls12_381>> {
             srs: BLSSRS {
-                g_public_key: srs.h_g2,
-                g_signature: srs.g_g1,
+                g_public_key: srs.g_g1,
+                g_signature: srs.h_g2,
             },
         };
         let bls_pok = BLSSignature::<BLSSignatureG2<Bls12_381>> {
@@ -342,7 +345,7 @@ mod test {
             };
             let dealer = Dealer {
                 private_key_sig: dealer_keypair_sig.0,
-                accumulated_secret: G2Projective::zero().into_affine(),
+                accumulated_secret: G1Projective::zero().into_affine(),
                 participant,
             };
 
@@ -384,10 +387,10 @@ mod test {
     fn test_2_nodes_and_aggregator_bls() {
         let rng = &mut thread_rng();
         let srs = SRS::<Bls12_381>::setup(rng).unwrap();
-        let bls_sig = BLSSignature::<BLSSignatureG1<Bls12_381>> {
+        let bls_sig = BLSSignature::<BLSSignatureG2<Bls12_381>> {
             srs: BLSSRS {
-                g_public_key: srs.h_g2,
-                g_signature: srs.g_g1,
+                g_public_key: srs.g_g1,
+                g_signature: srs.h_g2,
             },
         };
         let bls_pok = BLSSignature::<BLSSignatureG2<Bls12_381>> {
@@ -402,9 +405,9 @@ mod test {
     fn test_2_nodes_and_aggregator_schnorr() {
         let rng = &mut thread_rng();
         let srs = SRS::<Bls12_381>::setup(rng).unwrap();
-        let schnorr_sig = SchnorrSignature::<G2Affine> {
+        let schnorr_sig = SchnorrSignature::<G1Affine> {
             srs: SchnorrSRS {
-                g_public_key: srs.h_g2,
+                g_public_key: srs.g_g1,
             },
         };
         let schnorr_pok = SchnorrSignature::<G1Affine> {
@@ -417,7 +420,7 @@ mod test {
 
     fn test_2_nodes_and_aggregator_with_signature_scheme<
         SPOK: BatchVerifiableSignatureScheme<PublicKey = G1Affine, Secret = Fr>,
-        SSIG: BatchVerifiableSignatureScheme<PublicKey = G2Affine, Secret = Fr>,
+        SSIG: BatchVerifiableSignatureScheme<PublicKey = G1Affine, Secret = Fr>,
     >(
         srs: SRS<Bls12_381>,
         spok: SPOK,
@@ -445,7 +448,7 @@ mod test {
             };
             let dealer = Dealer {
                 private_key_sig: dealer_keypair_sig.0,
-                accumulated_secret: G2Projective::zero().into_affine(),
+                accumulated_secret: G1Projective::zero().into_affine(),
                 participant,
             };
 

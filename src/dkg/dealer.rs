@@ -4,9 +4,9 @@ use ark_ec::PairingEngine;
 #[derive(Clone)]
 pub struct Dealer<
     E: PairingEngine,
-    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G2Affine, Secret = E::Fr>,
+    SSIG: BatchVerifiableSignatureScheme<PublicKey = E::G1Affine, Secret = E::Fr>,
 > {
     pub private_key_sig: SSIG::Secret,
-    pub accumulated_secret: E::G2Affine,
+    pub accumulated_secret: E::G1Affine,
     pub participant: Participant<E, SSIG>,
 }
